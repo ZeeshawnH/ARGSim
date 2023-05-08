@@ -1,0 +1,358 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 55;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		878951E12A07510600375A96 /* sitenode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 878951CF2A07510600375A96 /* sitenode.cpp */; };
+		878951E22A07510600375A96 /* parameters.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 878951D02A07510600375A96 /* parameters.cpp */; };
+		878951E32A07510600375A96 /* chromrecomb.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 878951D32A07510600375A96 /* chromrecomb.cpp */; };
+		878951E42A07510600375A96 /* argnode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 878951D62A07510600375A96 /* argnode.cpp */; };
+		878951E52A07510600375A96 /* poisevents.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 878951DA2A07510600375A96 /* poisevents.cpp */; };
+		878951E62A07510600375A96 /* chromosome.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 878951DB2A07510600375A96 /* chromosome.cpp */; };
+		878951E72A07510600375A96 /* simulate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 878951DE2A07510600375A96 /* simulate.cpp */; };
+		878951E82A07510600375A96 /* world.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 878951DF2A07510600375A96 /* world.cpp */; };
+		878951E92A07510600375A96 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 878951E02A07510600375A96 /* main.cpp */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		878951C02A074FE600375A96 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		878951C22A074FE600375A96 /* ChromosomalInversionSim */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = ChromosomalInversionSim; sourceTree = BUILT_PRODUCTS_DIR; };
+		878951CF2A07510600375A96 /* sitenode.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = sitenode.cpp; sourceTree = "<group>"; };
+		878951D02A07510600375A96 /* parameters.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = parameters.cpp; sourceTree = "<group>"; };
+		878951D12A07510600375A96 /* argnode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = argnode.h; sourceTree = "<group>"; };
+		878951D22A07510600375A96 /* snptree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = snptree.h; sourceTree = "<group>"; };
+		878951D32A07510600375A96 /* chromrecomb.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = chromrecomb.cpp; sourceTree = "<group>"; };
+		878951D42A07510600375A96 /* chromosome.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = chromosome.h; sourceTree = "<group>"; };
+		878951D52A07510600375A96 /* ran_mk.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ran_mk.h; sourceTree = "<group>"; };
+		878951D62A07510600375A96 /* argnode.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = argnode.cpp; sourceTree = "<group>"; };
+		878951D72A07510600375A96 /* typedefs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = typedefs.h; sourceTree = "<group>"; };
+		878951D82A07510600375A96 /* tajima.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tajima.h; sourceTree = "<group>"; };
+		878951D92A07510600375A96 /* parameters.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = parameters.h; sourceTree = "<group>"; };
+		878951DA2A07510600375A96 /* poisevents.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = poisevents.cpp; sourceTree = "<group>"; };
+		878951DB2A07510600375A96 /* chromosome.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = chromosome.cpp; sourceTree = "<group>"; };
+		878951DC2A07510600375A96 /* sitenode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sitenode.h; sourceTree = "<group>"; };
+		878951DD2A07510600375A96 /* world.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = world.h; sourceTree = "<group>"; };
+		878951DE2A07510600375A96 /* simulate.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = simulate.cpp; sourceTree = "<group>"; };
+		878951DF2A07510600375A96 /* world.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = world.cpp; sourceTree = "<group>"; };
+		878951E02A07510600375A96 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		878951FC2A07514000375A96 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		878951FE2A0817C300375A96 /* outLABP.sites */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = outLABP.sites; sourceTree = "<group>"; };
+		878951FF2A0817C300375A96 /* labp_v17 */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = labp_v17; sourceTree = "<group>"; };
+		878952002A0817C300375A96 /* run.log */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = run.log; sourceTree = "<group>"; };
+		878952012A0817C300375A96 /* outLABP.stats */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = outLABP.stats; sourceTree = "<group>"; };
+		878952022A0817C300375A96 /* inLABP.pars */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = inLABP.pars; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		878951BF2A074FE600375A96 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		878951B92A074FE600375A96 = {
+			isa = PBXGroup;
+			children = (
+				878951C42A074FE600375A96 /* Guerrero */,
+				878951C32A074FE600375A96 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		878951C32A074FE600375A96 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				878951C22A074FE600375A96 /* ChromosomalInversionSim */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		878951C42A074FE600375A96 /* Guerrero */ = {
+			isa = PBXGroup;
+			children = (
+				878951FD2A0817C300375A96 /* tests */,
+				878951FC2A07514000375A96 /* README.md */,
+				878951CE2A07510600375A96 /* src */,
+			);
+			path = Guerrero;
+			sourceTree = "<group>";
+		};
+		878951CE2A07510600375A96 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				878951CF2A07510600375A96 /* sitenode.cpp */,
+				878951D02A07510600375A96 /* parameters.cpp */,
+				878951D12A07510600375A96 /* argnode.h */,
+				878951D22A07510600375A96 /* snptree.h */,
+				878951D32A07510600375A96 /* chromrecomb.cpp */,
+				878951D42A07510600375A96 /* chromosome.h */,
+				878951D52A07510600375A96 /* ran_mk.h */,
+				878951D62A07510600375A96 /* argnode.cpp */,
+				878951D72A07510600375A96 /* typedefs.h */,
+				878951D82A07510600375A96 /* tajima.h */,
+				878951D92A07510600375A96 /* parameters.h */,
+				878951DA2A07510600375A96 /* poisevents.cpp */,
+				878951DB2A07510600375A96 /* chromosome.cpp */,
+				878951DC2A07510600375A96 /* sitenode.h */,
+				878951DD2A07510600375A96 /* world.h */,
+				878951DE2A07510600375A96 /* simulate.cpp */,
+				878951DF2A07510600375A96 /* world.cpp */,
+				878951E02A07510600375A96 /* main.cpp */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
+		878951FD2A0817C300375A96 /* tests */ = {
+			isa = PBXGroup;
+			children = (
+				878951FE2A0817C300375A96 /* outLABP.sites */,
+				878951FF2A0817C300375A96 /* labp_v17 */,
+				878952002A0817C300375A96 /* run.log */,
+				878952012A0817C300375A96 /* outLABP.stats */,
+				878952022A0817C300375A96 /* inLABP.pars */,
+			);
+			path = tests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		878951C12A074FE600375A96 /* ChromosomalInversionSim */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 878951C92A074FE600375A96 /* Build configuration list for PBXNativeTarget "ChromosomalInversionSim" */;
+			buildPhases = (
+				878951BE2A074FE600375A96 /* Sources */,
+				878951BF2A074FE600375A96 /* Frameworks */,
+				878951C02A074FE600375A96 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ChromosomalInversionSim;
+			productName = Guerrero;
+			productReference = 878951C22A074FE600375A96 /* ChromosomalInversionSim */;
+			productType = "com.apple.product-type.tool";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		878951BA2A074FE600375A96 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastUpgradeCheck = 1340;
+				TargetAttributes = {
+					878951C12A074FE600375A96 = {
+						CreatedOnToolsVersion = 13.4.1;
+					};
+				};
+			};
+			buildConfigurationList = 878951BD2A074FE600375A96 /* Build configuration list for PBXProject "ChromosomalInversionSim" */;
+			compatibilityVersion = "Xcode 13.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 878951B92A074FE600375A96;
+			productRefGroup = 878951C32A074FE600375A96 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				878951C12A074FE600375A96 /* ChromosomalInversionSim */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		878951BE2A074FE600375A96 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				878951E42A07510600375A96 /* argnode.cpp in Sources */,
+				878951E62A07510600375A96 /* chromosome.cpp in Sources */,
+				878951E92A07510600375A96 /* main.cpp in Sources */,
+				878951E82A07510600375A96 /* world.cpp in Sources */,
+				878951E72A07510600375A96 /* simulate.cpp in Sources */,
+				878951E12A07510600375A96 /* sitenode.cpp in Sources */,
+				878951E52A07510600375A96 /* poisevents.cpp in Sources */,
+				878951E32A07510600375A96 /* chromrecomb.cpp in Sources */,
+				878951E22A07510600375A96 /* parameters.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		878951C72A074FE600375A96 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 12.1;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		878951C82A074FE600375A96 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 12.1;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		878951CA2A074FE600375A96 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				"HEADER_SEARCH_PATHS[arch=*]" = /opt/homebrew/Cellar/boost/1.81.0_1/include;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		878951CB2A074FE600375A96 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				"HEADER_SEARCH_PATHS[arch=*]" = /opt/homebrew/Cellar/boost/1.81.0_1/include;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		878951BD2A074FE600375A96 /* Build configuration list for PBXProject "ChromosomalInversionSim" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				878951C72A074FE600375A96 /* Debug */,
+				878951C82A074FE600375A96 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		878951C92A074FE600375A96 /* Build configuration list for PBXNativeTarget "ChromosomalInversionSim" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				878951CA2A074FE600375A96 /* Debug */,
+				878951CB2A074FE600375A96 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 878951BA2A074FE600375A96 /* Project object */;
+}
