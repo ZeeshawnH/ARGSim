@@ -121,8 +121,8 @@ vector < vector <double> > buildMigMatrix(Parameters& p){
 
 int main (int argc, const char * argv[]) {
     std::cerr<<"Seed: "<<rd()<<'\n';
-    //// A static seed, useful for debuggin:
-    //gen.seed(42U);
+    // A static seed, useful for debuggin:
+    gen.seed(42U);
     
     // Timer start
     std::chrono::time_point<std::chrono::system_clock> start, end;
@@ -130,8 +130,12 @@ int main (int argc, const char * argv[]) {
     
     unsigned int totalEvents=0;
     
+    // CAN BE MOVED TO EXTERNAL COMPONENT
+    // Establish io file streams
     stringstream infile;
+    // Output data
     stringstream ms_ss;
+    // Output data
     stringstream sstat_ss;
     if(argc > 1 ) {
         infile <<"inLABP_"<< argv[1]<<".pars";
@@ -144,11 +148,15 @@ int main (int argc, const char * argv[]) {
         sstat_ss<<"outLABP_"<< rd()<<".stats";
     }
   
+    
+    // Instantiate Paramaters
     Parameters params(infile.str().c_str());
     
+    // Pull from paramData
     unsigned int nRuns=params.paramData->nRuns;
     unsigned nSites = params.paramData->n_SNPs;
  
+    // Create migration matrix
     vector< vector<double> > mig_prob = buildMigMatrix(params);
     vector<double> outTime(params.paramData->n_SNPs, 0);
 
@@ -166,7 +174,8 @@ int main (int argc, const char * argv[]) {
     double LDsum=0;
     int ticker=(int)(nRuns/10);
     
-    if(ticker>0)std::cerr<<"Progress ticker (1 tick = 10% of runs): ";
+    if (ticker>0)
+        std::cerr<<"Progress ticker (1 tick = 10% of runs): ";
     for (int timer=0; timer<nRuns; ++timer){
         if(ticker>0 && timer % ticker  == 0) std::cerr <<"+";
         
@@ -175,6 +184,7 @@ int main (int argc, const char * argv[]) {
         params.setCarriers();
         unsigned nCarriers = params.paramData->initChr.size();
 
+        // New world instance
         World * world = new World(params.getpData());
         
         // Run simulation until only a single carrier remains:
@@ -183,6 +193,7 @@ int main (int argc, const char * argv[]) {
         }
         
         
+        // After simulation
         vector< shared_ptr < ARGNode > > allNodes = world->getARGVec();
         vector<double>tempLD (params.paramData->n_SNPs,0);
         

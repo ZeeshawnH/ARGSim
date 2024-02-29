@@ -21,8 +21,8 @@ using std::make_pair;
 #include <algorithm>
 using std::count;
 
-#include <boost/math/special_functions/binomial.hpp>
-using boost::math::binomial_coefficient;
+//#include <boost/math/special_functions/binomial.hpp>
+//using boost::math::binomial_coefficient;
 
 // Includes from our files:
 #include "chromosome.h"
