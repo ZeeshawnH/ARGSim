@@ -122,7 +122,7 @@ vector < vector <double> > buildMigMatrix(Parameters& p){
 int main (int argc, const char * argv[]) {
     std::cerr<<"Seed: "<<rd()<<'\n';
     //// A static seed, useful for debuggin:
-    //gen.seed(42U);
+    gen.seed(42U);
     
     // Timer start
     std::chrono::time_point<std::chrono::system_clock> start, end;
