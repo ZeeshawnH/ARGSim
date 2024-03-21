@@ -386,15 +386,7 @@ unsigned short World::coalesceEvent(vector<double>& rate, double total){
         //
         vector<int> carr_idx;
         for (int u=0; u< worldData->carriers->at(c).size(); ++u) carr_idx.push_back(u);
-        /*
-         Random_shuffle deprecated
-         Changing to shuffle(first, last, randomNumberGen)
-         Zeeshawn Hasnain 5/7/2023
-         */
-        // Random number gen variable (Mersenne Twister)
-        std::mt19937 rng(time(nullptr));
-        // Change to shuffle() and add rng parameter
-        shuffle(carr_idx.begin(), carr_idx.end(), rng);
+        random_shuffle(carr_idx.begin(), carr_idx.end());
         
         shared_ptr<Chromosome> chrom = worldData->carriers->at(c).at(carr_idx.at(0));
         shared_ptr<Chromosome> chrom2 = worldData->carriers->at(c).at(carr_idx.at(1));
