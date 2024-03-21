@@ -37,6 +37,7 @@
 	
 // ==================================================================
 
+// World class handles most of simulation it seems
 
 
 class World {

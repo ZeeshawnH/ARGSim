@@ -30,8 +30,8 @@ using std::max;
 using std::min;
 
 
-#include <boost/math/special_functions/binomial.hpp>
-using boost::math::binomial_coefficient;
+//#include <boost/math/special_functions/binomial.hpp>
+//using boost::math::binomial_coefficient;
 
 // Includes from our files:
 #include "chromosome.h"
@@ -40,6 +40,7 @@ using boost::math::binomial_coefficient;
 #include "argnode.h"
 #include "sitenode.h"
 
+#include "math_util.h"
 
 //	Implimentation notes:
 
@@ -102,7 +103,7 @@ unsigned short World::simulateGeneration(vector < vector <double> > & mig_prob){
             if(k > 1){
                 unsigned int a=2;
                 if(clustSize==0) {std::cerr<<"Error in SimulateGeneration(): Carriers in seemly empty context\n";}
-                double ka= binomial_coefficient<double>(k,a)/clustSize;
+                double ka= binomial_coefficient(k,a)/clustSize;
                 cRate.push_back( ka );
                 totalC += ka;		//
             }

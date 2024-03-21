@@ -21,6 +21,8 @@
 	#include <map>
 		using std::map;
 	#include <math.h>
+
+#include <assert.h>
 	
 // Includes from our files:
 	#include "chromosome.h"

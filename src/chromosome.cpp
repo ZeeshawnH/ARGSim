@@ -34,6 +34,9 @@
 		using std::shared_ptr;
 		using std::weak_ptr;
 
+// REPLACING BOOST:assert
+#include <assert.h>
+
 // Includes from our files:
 	#include "typedefs.h"
 	#include "chromosome.h"

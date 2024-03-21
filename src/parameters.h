@@ -24,6 +24,7 @@
 // Forward declaration:
 	class Chromosome;
 
+// Class containing all parameters
 class Parameters {
   
  public:
@@ -45,6 +46,7 @@ class Parameters {
 	
 };
 
+// Inner struct containing parameter data
 struct Parameters::ParameterData{
 	//
 	// Private data for Parameters
