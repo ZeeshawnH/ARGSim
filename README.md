@@ -10,13 +10,19 @@ This repository currently contains a development-only version of ARGSim. Once a 
 
 ### Building
 As of July 2024, the simulation requires CMake version 3.26.1 or higher. You can install CMake with your package manager of choice. Ex. Homebrew:
-```brew install cmake```
+```
+brew install cmake
+```
 
-```cmake --version```
+```
+cmake --version
+```
 
 Once you have CMake installed, run the `init.sh` script in the root directory to create the `/build/` directory and run the necessary `cmake` commands.
 
-```./init.sh```
+```
+./init.sh
+```
 
 Then, navigate to the `/build/` directory and run `make`. The executable `labp_v22` will be produced in the `/tests/` directory of the root folder.
 
