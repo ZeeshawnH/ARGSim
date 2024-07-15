@@ -138,12 +138,12 @@ int main (int argc, const char * argv[]) {
     // Output data
     stringstream sstat_ss;
     if(argc > 1 ) {
-        infile <<"inLABP_"<< argv[1]<<".pars";
+        infile <<"inLABP_"<< argv[1]<<".yaml";
         ms_ss <<"outLABP_"<< argv[1]<<".sites";
         sstat_ss<<"outLABP_"<< argv[1]<<".stats";
     }
     else{
-        infile <<"inLABP.pars";
+        infile <<"inLABP.yaml";
         ms_ss <<"outLABP_" << rd()<<".sites";
         sstat_ss<<"outLABP_"<< rd()<<".stats";
     }

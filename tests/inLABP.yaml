@@ -1,0 +1,41 @@
+---
+nRuns: 10000
+kingman: true
+drift: true
+msOutput: true
+popSizes:
+  - 10000
+  - 10000
+inversionFreqs:
+  - 0
+  - 0
+speciation:
+  simulate: true
+  time: 10000
+  inversionFreq: 0
+demographyChange:
+  simulate: false
+  time:
+  coefficient:
+inversionAge: 0
+migRate: 0
+bp: 1e8
+isPhiRand: false
+phi:
+  - 0
+inversionBreakpoints:
+  L: 0
+  R: 1e3
+SNP:
+  isFixed: false
+  nBases: 1000
+  mutationRate: 1e-6
+  randPos: true
+  range:
+    - 1000.01
+    - 1000.011
+carriers:
+  random: false
+  data:
+    - [10, 0]
+    - [10, 0]

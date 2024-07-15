@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION "3.26.5")
+cmake_minimum_required(VERSION "3.26.4")
 
 project("ARGSIM")
 
@@ -21,8 +21,18 @@ set(SOURCES
     src/world.cpp
 )
 
+# Add dependencies
+add_subdirectory(libs/yaml-cpp)
+
 # Build executable
 add_executable(labp_v22 ${SOURCES})
 
 # Set the output directory for the executable
 set_target_properties(labp_v22 PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/../tests")
+
+# Link libs
+target_link_libraries(
+    labp_v22
+    PRIVATE
+    yaml-cpp
+)
