@@ -1,7 +1,7 @@
 ---
 nRuns: 10000
 kingman: true
-drift: true
+drift: false
 msOutput: true
 popSizes:
   - 10000
