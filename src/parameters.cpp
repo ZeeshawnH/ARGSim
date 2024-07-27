@@ -64,7 +64,7 @@ using std::shared_ptr;
 #define NUM_BASES "nBases"
 #define MUTATION_RATE "mutationRate"
 #define RANDOM_POS "randPos"
-#define RANGE "RANGE"
+#define RANGE "range"
 #define BEGIN "begin"
 #define END "end"
 #define CARRIERS "carriers"
@@ -226,7 +226,13 @@ Parameters::Parameters(const char *insstring)
     std::cerr << "Markers in random locations? " << randSNP << '\n';
 
     // range (positions of begin-end) where the SNPs are -- in bases
-    vector<double> snpPositions = snp[RANGE].as<vector<double>>();
+    vector<double> snpPositions;
+    if (snp[RANGE]) {
+        snpPositions = input[SNP][RANGE].as<vector<double>>();
+    } else {
+        exit(1);
+    }
+    
     for (int i = 0; i < snpPositions.size(); i++) {
         snpPositions[i] = snpPositions[i] / bpm;
         paramData->snpPositions.push_back(snpPositions[i]);
