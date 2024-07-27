@@ -182,6 +182,7 @@ Parameters::Parameters(const char *insstring)
     // Migration rate (4Nm)
     double migrationRate = input[MIG_RATE].as<double>();
     paramData->migRate.push_back(migrationRate);
+    std::cerr << "Migration rate (pop0<-->1) = " << paramData->migRate[0] << '\n';
 
     // bases per Morgan in the hh genotype.
     double bpm = input[BP].as<double>();
