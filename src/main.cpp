@@ -143,7 +143,7 @@ int main (int argc, const char * argv[]) {
         sstat_ss<<"outLABP_"<< argv[1]<<".stats";
     }
     else{
-        infile <<"inLABP.yaml";
+        infile <<"inLABP.pars";
         ms_ss <<"outLABP_" << rd()<<".sites";
         sstat_ss<<"outLABP_"<< rd()<<".stats";
     }
