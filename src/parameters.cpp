@@ -359,66 +359,66 @@ Parameters::Parameters(const char *insstring)
         paramData->randSNP = false;
     }
 
-    // should the sample be random?
-    bool randomSample = false;
-    getline(fin, line);
-    iss.clear();
-    iss.str(line);
-    while (iss >> temp)
-    {
-        randomSample = (bool)temp;
-    }
-    std::cerr << "Random sample of carriers? " << randomSample << '\n';
+    // // should the sample be random?
+    // bool randomSample = false;
+    // getline(fin, line);
+    // iss.clear();
+    // iss.str(line);
+    // while (iss >> temp)
+    // {
+    //     randomSample = (bool)temp;
+    // }
+    // std::cerr << "Random sample of carriers? " << randomSample << '\n';
 
-    paramData->nCarriers.resize(pops);
+    // paramData->nCarriers.resize(pops);
 
-    if (randomSample)
-    {
-        vector<int> tempRead;
-        getline(fin, line);
-        iss.clear();
-        iss.str(line);
-        while (iss >> temp)
-        {
-            tempRead.push_back(temp);
-        }
-        if (tempRead.size() != pops)
-        {
-            std::cerr << "Inconsistent number of sample sizes found (should be equal to number of pops)\n";
-            exit(1);
-        }
+    // if (randomSample)
+    // {
+    //     vector<int> tempRead;
+    //     getline(fin, line);
+    //     iss.clear();
+    //     iss.str(line);
+    //     while (iss >> temp)
+    //     {
+    //         tempRead.push_back(temp);
+    //     }
+    //     if (tempRead.size() != pops)
+    //     {
+    //         std::cerr << "Inconsistent number of sample sizes found (should be equal to number of pops)\n";
+    //         exit(1);
+    //     }
 
-        for (int p = 0; p < pops; ++p)
-        {
-            int invcount = randbinom(tempRead[p], paramData->initialFreqs.at(p));
-            paramData->nCarriers.at(p).push_back(tempRead[p] - invcount);
-            paramData->nCarriers.at(p).push_back(invcount);
-        }
-    }
-    else
-    { // number of S, I carriers in each pop
-        int totalSample = 0;
-        for (int p = 0; p < pops; ++p)
-        {
-            std::cerr << "Sample in Pop " << p << ": ";
-            getline(fin, line);
-            iss.clear();
-            iss.str(line);
-            while (iss >> temp)
-            {
-                paramData->nCarriers.at(p).push_back(temp);
-                totalSample += temp;
-                std::cerr << temp << " ";
-            }
-            std::cerr << '\n';
-        }
-        if (totalSample == 2)
-            std::cerr << "Sample size = 2 || Warning: Informative sites length function won't work.\n";
-    }
+    //     for (int p = 0; p < pops; ++p)
+    //     {
+    //         int invcount = randbinom(tempRead[p], paramData->initialFreqs.at(p));
+    //         paramData->nCarriers.at(p).push_back(tempRead[p] - invcount);
+    //         paramData->nCarriers.at(p).push_back(invcount);
+    //     }
+    // }
+    // else
+    // { // number of S, I carriers in each pop
+    //     int totalSample = 0;
+    //     for (int p = 0; p < pops; ++p)
+    //     {
+    //         std::cerr << "Sample in Pop " << p << ": ";
+    //         getline(fin, line);
+    //         iss.clear();
+    //         iss.str(line);
+    //         while (iss >> temp)
+    //         {
+    //             paramData->nCarriers.at(p).push_back(temp);
+    //             totalSample += temp;
+    //             std::cerr << temp << " ";
+    //         }
+    //         std::cerr << '\n';
+    //     }
+    //     if (totalSample == 2)
+    //         std::cerr << "Sample size = 2 || Warning: Informative sites length function won't work.\n";
+    // }
 
     fin.close();
     
-    // YAML::Node input = YAML::LoadFile(insstring);
+    YAML::Node input = YAML::LoadFile("inLABP.yaml");
 
     // // Number of runs
     // auto nRuns = input[NUM_RUNS].as<unsigned int>();
@@ -595,41 +595,41 @@ Parameters::Parameters(const char *insstring)
     //     paramData->snpPositions.resize(1);
     // }
 
-    // // should the sample be random?
-    // bool randomSample = input[CARRIERS][RANDOM].as<bool>();
-    // std::cerr << "Random sample of carriers? " << randomSample << '\n';
+    // should the sample be random?
+    bool randomSample = input[CARRIERS][RANDOM].as<bool>();
+    std::cerr << "Random sample of carriers? " << randomSample << '\n';
 
-    // paramData->nCarriers.resize(popSizes.size());
+    paramData->nCarriers.resize(paramData->popSizeVec.size());
 
-    // if (randomSample) {
-    //     vector<int> carriers = input[CARRIERS][DATA][0].as<vector<int>>();
-    //     if (carriers.size() != popSizes.size()) {
-    //         std::cerr << "Inconsistent number of sample sizes found (should be equal to number of pops)\n";
-    //         exit(1);
-    //     }
+    if (randomSample) {
+        vector<int> carriers = input[CARRIERS][DATA][0].as<vector<int>>();
+        if (carriers.size() != paramData->popSizeVec.size()) {
+            std::cerr << "Inconsistent number of sample sizes found (should be equal to number of pops)\n";
+            exit(1);
+        }
 
-    //     for (int p = 0; p < popSizes.size(); ++p) {
-    //         int invcount = randbinom(carriers[p], paramData->initialFreqs.at(p));
-    //         paramData->nCarriers.at(p).push_back(carriers[p] - invcount);
-    //         paramData->nCarriers.at(p).push_back(invcount);
-    //     }
-    // } else {
-    //     YAML::Node carriersDataRaw = input[CARRIERS][DATA];
-    //     int totalSample = 0;
-    //     for (int p = 0; p < popSizes.size(); ++p) {
-    //         std::cerr << "Sample in Pop " << p << ": ";
-    //         vector<int> row = carriersDataRaw[p].as<vector<int>>();
-    //         for (int j = 0; j < row.size(); j++){
-    //             paramData->nCarriers.at(p).push_back(row[j]);
-    //             totalSample += row[j];
-    //             std::cerr << row[j] << " ";
-    //         }
-    //         std::cerr << '\n';
-    //     }
-    //     if (totalSample == 2) {
-    //         std::cerr << "Sample size = 2 || Warning: Informative sites length function won't work.\n";
-    //     }
-    // }
+        for (int p = 0; p < paramData->popSizeVec.size(); ++p) {
+            int invcount = randbinom(carriers[p], paramData->initialFreqs.at(p));
+            paramData->nCarriers.at(p).push_back(carriers[p] - invcount);
+            paramData->nCarriers.at(p).push_back(invcount);
+        }
+    } else {
+        YAML::Node carriersDataRaw = input[CARRIERS][DATA];
+        int totalSample = 0;
+        for (int p = 0; p < paramData->popSizeVec.size(); ++p) {
+            std::cerr << "Sample in Pop " << p << ": ";
+            vector<int> row = carriersDataRaw[p].as<vector<int>>();
+            for (int j = 0; j < row.size(); j++){
+                paramData->nCarriers.at(p).push_back(row[j]);
+                totalSample += row[j];
+                std::cerr << row[j] << " ";
+            }
+            std::cerr << '\n';
+        }
+        if (totalSample == 2) {
+            std::cerr << "Sample size = 2 || Warning: Informative sites length function won't work.\n";
+        }
+    }
 
 } // end constructor
 
