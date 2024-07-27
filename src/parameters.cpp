@@ -78,559 +78,558 @@ Parameters::Parameters(const char *insstring)
 
     paramData.reset(new ParameterData);
 
-    YAML::Node input = YAML::LoadFile(insstring);
+    ifstream fin(insstring);
+    string line;
+    int temp;
+    double doubtemp;
 
-    // Number of runs
-    auto nRuns = input[NUM_RUNS].as<unsigned int>();
-    paramData->nRuns = nRuns;
+    // Read in different params
+    //  number of runs
+    getline(fin, line);
+    if (!fin)
+    {
+        std::cerr << "No pars file. \n";
+        exit(1);
+    }
+
+    istringstream iss(line);
+    while (iss >> temp)
+    {
+        paramData->nRuns = temp;
+    }
     std::cerr << "Number of runs: " << paramData->nRuns << '\n';
 
     // Should we simulate kingman coalescent? (i.e. exponential waiting times). If false, does generation by generation
-    bool kingman = input[KINGMAN].as<bool>();
-    paramData->kingman = kingman;
+    getline(fin, line);
+    iss.clear();
+    iss.str(line);
+    while (iss >> temp)
+    {
+        paramData->kingman = (bool)temp;
+    }
     std::cerr << "Assuming Kingman? " << paramData->kingman << '\n';
 
     // Simulate drift trajectory?
-    bool drift = input[DRIFT].as<bool>();
-    paramData->drift = drift;
+    getline(fin, line);
+    iss.clear();
+    iss.str(line);
+    while (iss >> temp)
+    {
+        paramData->drift = (bool)temp;
+    }
     std::cerr << "Simulating drift? " << paramData->drift << '\n';
 
-    if (drift)
+    if (paramData->drift)
     {
         std::cerr << "Sorry, drift not implemented in this version yet\n";
         exit(1);
     }
 
     // Output ms-formatted haplotypes?
-    bool msOutput = input[MS_OUTPUT].as<bool>();
-    paramData->msOutput = msOutput;
+    getline(fin, line);
+    iss.clear();
+    iss.str(line);
+    while (iss >> temp)
+    {
+        paramData->msOutput = (bool)temp;
+    }
     std::cerr << "Output each set in ms format? " << paramData->msOutput << '\n';
 
-    // Population sizes
-    vector<unsigned int> popSizes = input[POP_SIZES].as<vector<unsigned int>>();
-    paramData->popSizeVec = popSizes;
+    // Population Sizes
+    getline(fin, line);
+    iss.clear();
+    iss.str(line);
+    while (iss >> temp)
+    {
+        paramData->popSizeVec.push_back(temp);
+    }
     std::cerr << "Population Sizes: ";
-
-    for (int n = 0; n < (int)popSizes.size(); n++)
+    for (int n = 0; n < (int)paramData->popSizeVec.size(); n++)
     {
         std::cerr << (n) << " = " << paramData->popSizeVec.at(n) << " | ";
     }
     std::cerr << '\n';
+    paramData->totalPopSize = std::accumulate(paramData->popSizeVec.begin(), paramData->popSizeVec.end(), 0);
 
-    paramData->totalPopSize = std::accumulate(popSizes.begin(), popSizes.end(), 0);
+    unsigned int pops = paramData->popSizeVec.size();
 
     // Inversion initial frequencies
-    vector<double> initialFreqs = input[INVERSION_FREQS].as<vector<double>>();
-    paramData->initialFreqs = initialFreqs;
+    getline(fin, line);
+    iss.clear();
+    iss.str(line);
+    while (iss >> doubtemp)
+    {
+        paramData->initialFreqs.push_back(doubtemp);
+    }
 
-    if (paramData->initialFreqs.size() != paramData->popSizeVec.size())
+    if (paramData->initialFreqs.size() != pops)
     {
         std::cerr << "Inconsistent number of sample sizes found (should be equal to number of pops)\n";
         exit(1);
     }
 
     std::cerr << "Frequencies of inverted chromosomes: ";
-    for (int n = 0; n < (int) initialFreqs.size(); n++) {
+    for (int n = 0; n < (int)paramData->initialFreqs.size(); n++)
+    {
         std::cerr << (n) << " = " << paramData->initialFreqs.at(n) << " | ";
     }
     std::cerr << '\n';
 
     // Simulate speciation?
-    auto speciation = input[SPECIATION];
-    bool simulateSpeciation = speciation[SIMULATE].as<bool>();
-    paramData->speciation.push_back(simulateSpeciation ? 1 : 0);
-    if (simulateSpeciation) {
-        if (!speciation[TIME] || !speciation[INVERSION_FREQ]) {
+    getline(fin, line);
+    iss.clear();
+    iss.str(line);
+    while (iss >> doubtemp)
+    {
+        paramData->speciation.push_back(doubtemp);
+    }
+    if (paramData->speciation.at(0) == 1)
+    {
+        if (paramData->speciation.size() < 3)
+        {
             std::cerr << "Error; Simulating speciation but no time or invFreq parameters found\n";
             exit(1);
         }
-        paramData->speciation.push_back(speciation[TIME].as<double>());
-        paramData->speciation.push_back(speciation[INVERSION_FREQ].as<double>());
-
-        std::cerr << "Speciation time: " << speciation[TIME] << "\n";
-    } else {
+        std::cerr << "Speciation time: " << paramData->speciation.at(1) << "\n";
+    }
+    else
+    {
         std::cerr << "No speciation.\n";
     }
 
     // Simulate demography?
-    auto demography = input[DEMOGRAPHY_CHANGE];
-    bool simulateDemography = demography[SIMULATE].as<bool>();
-    paramData->demography.push_back(simulateDemography ? 1 : 0);
-    if (simulateDemography) {
-        if (!demography[TIME] || !demography[COEFFICIENT]) {
+    getline(fin, line);
+    iss.clear();
+    iss.str(line);
+    while (iss >> doubtemp)
+    {
+        paramData->demography.push_back(doubtemp);
+    }
+    if (paramData->demography.at(0) == 1)
+    {
+        if (paramData->speciation.size() < 3)
+        {
             std::cerr << "Error; Simulating demography but no time parameter found\n";
             exit(1);
         }
-        paramData->demography.push_back(demography[TIME].as<double>());
-        paramData->demography.push_back(demography[COEFFICIENT].as<double>());
-        std::cerr << "Demography change time: " << demography[TIME] << "\n";
+        std::cerr << "Demography change time: " << paramData->demography.at(1) << "\n";
         std::cerr << "Reminder: this coeff multiplies all pop sizes in the preceding epoch\n";
-    } else {
+    }
+    else
+    {
         std::cerr << "No demographic event.\n";
     }
 
     // Age of inversion in number of generations (EX: 1500)
-    unsigned int inversionAge = input[INVERSION_AGE].as<unsigned int>();
-    if (inversionAge > 0 && inversionAge < std::max(demography[TIME].as<double>(), speciation[TIME].as<double>())) {
+    getline(fin, line);
+    iss.clear();
+    iss.str(line);
+    while (iss >> temp)
+    {
+        paramData->inv_age = temp;
+    }
+    std::cerr << "Age of inversion = " << paramData->inv_age << '\n';
+
+    if (paramData->inv_age > 0 && paramData->inv_age < std::max(paramData->demography.at(1), paramData->speciation.at(1)))
+    {
         std::cerr << "Error: Current implementations only allows for inversions that predate speciation and demographic changes\n";
         exit(1);
     }
 
-    paramData->inv_age = inversionAge;
-    std::cerr << "Age of inversion = " << paramData->inv_age << '\n';
-
     // Migration rate (4Nm)
-    double migrationRate = input[MIG_RATE].as<double>();
-    paramData->migRate.push_back(migrationRate);
+    getline(fin, line);
+    iss.clear();
+    iss.str(line);
+    while (iss >> doubtemp)
+    {
+        paramData->migRate.push_back(doubtemp);
+    }
     std::cerr << "Migration rate (pop0<-->1) = " << paramData->migRate[0] << '\n';
 
     // bases per Morgan in the hh genotype.
-    double bpm = input[BP].as<double>();
-    paramData->BasesPerMorgan = bpm;
+    getline(fin, line);
+    iss.clear();
+    iss.str(line);
+    while (iss >> doubtemp)
+    {
+        paramData->BasesPerMorgan = doubtemp;
+    }
     std::cerr << "Bases per Morgan in homokaryotypic recombination " << paramData->BasesPerMorgan << '\n';
 
     // Random phi?
-    bool randPhi = input[IS_PHI_RANDOM].as<bool>();
-    paramData->randPhi = randPhi;
+    getline(fin, line);
+    iss.clear();
+    iss.str(line);
+    while (iss >> temp)
+    {
+        paramData->randPhi = (bool)temp;
+    }
     std::cerr << "Random phi values? (if 1, range below. if 0, single value read below) " << paramData->randPhi << '\n';
 
-    vector<double> phiRange = input[PHI].as<vector<double>>();
-    paramData->phi_range = phiRange;
-    if (randPhi) {
-        std::cerr << "Random gene flux (phi) range = " << paramData->phi_range[0] << " - " << phiRange[1] << '\n';
-    } else {
+    getline(fin, line);
+    iss.clear();
+    iss.str(line);
+    while (iss >> doubtemp)
+    {
+        paramData->phi_range.push_back(doubtemp);
+    }
+    if (paramData->randPhi)
+    {
+        std::cerr << "Random gene flux (phi) range = " << paramData->phi_range[0] << " - " << paramData->phi_range[1] << '\n';
+    }
+    else
+    {
         std::cerr << "Gene flux (phi) = " << paramData->phi_range[0] << '\n';
     }
 
     // the range of the inversion
-    double left = input[INVERSION_BREAKPOINTS][LEFT].as<double>();
-    double right = input[INVERSION_BREAKPOINTS][RIGHT].as<double>();
-    paramData->invRange.L = left;
-    paramData->invRange.R = right;
-    std::cerr << "Inversion from: " << paramData->invRange.L << " to " << paramData->invRange.R << " (" << paramData->invRange.L << " - " << paramData->invRange.R << " recUnits)\n";
+    vector<double> invtemp;
+    getline(fin, line);
+    iss.clear();
+    iss.str(line);
+    while (iss >> doubtemp)
+    {
+        invtemp.push_back(doubtemp);
+    }
+    paramData->invRange.L = invtemp[0] / paramData->BasesPerMorgan;
+    paramData->invRange.R = invtemp[1] / paramData->BasesPerMorgan;
+    std::cerr << "Inversion from: " << invtemp[0] << " to " << invtemp[1] << " (" << paramData->invRange.L << " - " << paramData->invRange.R << " recUnits)\n";
 
     // Fixed S? Value of S or sequence length (bases), Theta
-    auto snp = input[SNP];
-    bool SNPFixed = snp[IS_FIXED].as<bool>();
-    paramData->fixedS = SNPFixed;
-
-    unsigned int numBases = snp[NUM_BASES].as<unsigned int>();
-    paramData->n_SNPs = numBases;
-
-    double mutationRate = snp[MUTATION_RATE].as<double>();
-    paramData->theta = SNPFixed ? 0 : mutationRate;
-    std::cerr << (SNPFixed ? "Number of markers to simulate: " : "Number of bases (non-recombining) to simulate: ") << paramData->n_SNPs << '\n';
+    vector<double> stemp;
+    getline(fin, line);
+    iss.clear();
+    iss.str(line);
+    while (iss >> doubtemp)
+    {
+        stemp.push_back(doubtemp);
+    }
+    paramData->fixedS = (bool)stemp[0];
+    paramData->n_SNPs = (int)stemp[1];
+    if (paramData->fixedS)
+    {
+        paramData->theta = 0;
+        std::cerr << "Number of markers to simulate: " << paramData->n_SNPs << '\n';
+    }
+    else
+    {
+        paramData->theta = stemp[2];
+        std::cerr << "Number of bases (non-recombining) to simulate: " << paramData->n_SNPs << ", with mutation rate: " << paramData->theta << '\n';
+    }
 
     // random positions of SNPs?
-    bool randSNP = snp[RANDOM_POS].as<bool>();
-    paramData->randSNP = randSNP;
+    getline(fin, line);
+    iss.clear();
+    iss.str(line);
+    while (iss >> temp)
+    {
+        paramData->randSNP = (bool)temp;
+    }
     std::cerr << "Markers in random locations? " << paramData->randSNP << '\n';
 
     // range (positions of begin-end) where the SNPs are -- in bases
-    vector<double> snpPositions;
-    if (snp[RANGE]) {
-        snpPositions = input[SNP][RANGE].as<vector<double>>();
-    } else {
-        exit(1);
-    }
-    
-    for (int i = 0; i < snpPositions.size(); i++) {
-        snpPositions[i] = snpPositions[i] / bpm;
-        paramData->snpPositions.push_back(snpPositions[i]);
+    getline(fin, line);
+    iss.clear();
+    iss.str(line);
+    while (iss >> doubtemp)
+    {
+        paramData->snpPositions.push_back(doubtemp / paramData->BasesPerMorgan);
     }
     std::cerr << paramData->snpPositions.size() << " Site positions read.\n";
 
-    if (randSNP) {
-        paramData->snpRange.push_back(snpPositions[0]);
-        paramData->snpRange.push_back(snpPositions[snpPositions.size() - 1]);
+    if (paramData->randSNP)
+    {
+        paramData->snpRange.push_back(paramData->snpPositions[0]);
+        paramData->snpRange.push_back(paramData->snpPositions[paramData->snpPositions.size() - 1]);
 
-        if (snpPositions.size() != 2) {
+        if (paramData->snpPositions.size() != 2)
+        {
             std::cerr << "Warning: Asking for random SNPs, but number of SNPs read !=2. Will only take first and last SNP positions as the range for random SNP locations\n";
         }
-        if (!SNPFixed) {
+        if (!paramData->fixedS)
+        {
             std::cerr << "Warning: Number of segregating sites (S) is not fixed. SNPRange will be ignored. Random SNPs will be simulated in non-recombining region, using theta parameter.\n";
         }
         std::cerr << "Window of SNP locations (in recUnits): " << paramData->snpRange[0] << " - " << paramData->snpRange[paramData->snpRange.size() - 1] << '\n';
-    } else {
+    }
+
+    if (!paramData->fixedS)
+    {
         paramData->snpPositions.resize(1);
+        paramData->randSNP = false;
     }
 
     // should the sample be random?
-    bool randomSample = input[CARRIERS][RANDOM].as<bool>();
+    bool randomSample = false;
+    getline(fin, line);
+    iss.clear();
+    iss.str(line);
+    while (iss >> temp)
+    {
+        randomSample = (bool)temp;
+    }
     std::cerr << "Random sample of carriers? " << randomSample << '\n';
 
-    paramData->nCarriers.resize(popSizes.size());
+    paramData->nCarriers.resize(pops);
 
-    if (randomSample) {
-        vector<int> carriers = input[CARRIERS][DATA][0].as<vector<int>>();
-        if (carriers.size() != popSizes.size()) {
+    if (randomSample)
+    {
+        vector<int> tempRead;
+        getline(fin, line);
+        iss.clear();
+        iss.str(line);
+        while (iss >> temp)
+        {
+            tempRead.push_back(temp);
+        }
+        if (tempRead.size() != pops)
+        {
             std::cerr << "Inconsistent number of sample sizes found (should be equal to number of pops)\n";
             exit(1);
         }
 
-        for (int p = 0; p < popSizes.size(); ++p) {
-            int invcount = randbinom(carriers[p], paramData->initialFreqs.at(p));
-            paramData->nCarriers.at(p).push_back(carriers[p] - invcount);
+        for (int p = 0; p < pops; ++p)
+        {
+            int invcount = randbinom(tempRead[p], paramData->initialFreqs.at(p));
+            paramData->nCarriers.at(p).push_back(tempRead[p] - invcount);
             paramData->nCarriers.at(p).push_back(invcount);
         }
-    } else {
-        YAML::Node carriersDataRaw = input[CARRIERS][DATA];
+    }
+    else
+    { // number of S, I carriers in each pop
         int totalSample = 0;
-        for (int p = 0; p < popSizes.size(); ++p) {
+        for (int p = 0; p < pops; ++p)
+        {
             std::cerr << "Sample in Pop " << p << ": ";
-            vector<int> row = carriersDataRaw[p].as<vector<int>>();
-            for (int j = 0; j < row.size(); j++){
-                paramData->nCarriers.at(p).push_back(row[j]);
-                totalSample += row[j];
-                std::cerr << row[j] << " ";
+            getline(fin, line);
+            iss.clear();
+            iss.str(line);
+            while (iss >> temp)
+            {
+                paramData->nCarriers.at(p).push_back(temp);
+                totalSample += temp;
+                std::cerr << temp << " ";
             }
             std::cerr << '\n';
         }
-        if (totalSample == 2) {
+        if (totalSample == 2)
             std::cerr << "Sample size = 2 || Warning: Informative sites length function won't work.\n";
-        }
     }
 
+    fin.close();
     
-    // ifstream fin(insstring);
-    // string line;
-    // int temp;
-    // double doubtemp;
+    // YAML::Node input = YAML::LoadFile(insstring);
 
-    // // Read in different params
-    // //  number of runs
-    // getline(fin, line);
-    // if (!fin)
-    // {
-    //     std::cerr << "No pars file. \n";
-    //     exit(1);
-    // }
-
-    // istringstream iss(line);
-    // while (iss >> temp)
-    // {
-    //     paramData->nRuns = temp;
-    // }
+    // // Number of runs
+    // auto nRuns = input[NUM_RUNS].as<unsigned int>();
+    // paramData->nRuns = nRuns;
     // std::cerr << "Number of runs: " << paramData->nRuns << '\n';
 
     // // Should we simulate kingman coalescent? (i.e. exponential waiting times). If false, does generation by generation
-    // getline(fin, line);
-    // iss.clear();
-    // iss.str(line);
-    // while (iss >> temp)
-    // {
-    //     paramData->kingman = (bool)temp;
-    // }
+    // bool kingman = input[KINGMAN].as<bool>();
+    // paramData->kingman = kingman;
     // std::cerr << "Assuming Kingman? " << paramData->kingman << '\n';
 
     // // Simulate drift trajectory?
-    // getline(fin, line);
-    // iss.clear();
-    // iss.str(line);
-    // while (iss >> temp)
-    // {
-    //     paramData->drift = (bool)temp;
-    // }
+    // bool drift = input[DRIFT].as<bool>();
+    // paramData->drift = drift;
     // std::cerr << "Simulating drift? " << paramData->drift << '\n';
 
-    // if (paramData->drift)
+    // if (drift)
     // {
     //     std::cerr << "Sorry, drift not implemented in this version yet\n";
     //     exit(1);
     // }
 
     // // Output ms-formatted haplotypes?
-    // getline(fin, line);
-    // iss.clear();
-    // iss.str(line);
-    // while (iss >> temp)
-    // {
-    //     paramData->msOutput = (bool)temp;
-    // }
+    // bool msOutput = input[MS_OUTPUT].as<bool>();
+    // paramData->msOutput = msOutput;
     // std::cerr << "Output each set in ms format? " << paramData->msOutput << '\n';
 
-    // // Population Sizes
-    // getline(fin, line);
-    // iss.clear();
-    // iss.str(line);
-    // while (iss >> temp)
-    // {
-    //     paramData->popSizeVec.push_back(temp);
-    // }
+    // // Population sizes
+    // vector<unsigned int> popSizes = input[POP_SIZES].as<vector<unsigned int>>();
+    // paramData->popSizeVec = popSizes;
     // std::cerr << "Population Sizes: ";
-    // for (int n = 0; n < (int)paramData->popSizeVec.size(); n++)
+
+    // for (int n = 0; n < (int)popSizes.size(); n++)
     // {
     //     std::cerr << (n) << " = " << paramData->popSizeVec.at(n) << " | ";
     // }
     // std::cerr << '\n';
-    // paramData->totalPopSize = std::accumulate(paramData->popSizeVec.begin(), paramData->popSizeVec.end(), 0);
 
-    // unsigned int pops = paramData->popSizeVec.size();
+    // paramData->totalPopSize = std::accumulate(popSizes.begin(), popSizes.end(), 0);
 
     // // Inversion initial frequencies
-    // getline(fin, line);
-    // iss.clear();
-    // iss.str(line);
-    // while (iss >> doubtemp)
-    // {
-    //     paramData->initialFreqs.push_back(doubtemp);
-    // }
+    // vector<double> initialFreqs = input[INVERSION_FREQS].as<vector<double>>();
+    // paramData->initialFreqs = initialFreqs;
 
-    // if (paramData->initialFreqs.size() != pops)
+    // if (paramData->initialFreqs.size() != paramData->popSizeVec.size())
     // {
     //     std::cerr << "Inconsistent number of sample sizes found (should be equal to number of pops)\n";
     //     exit(1);
     // }
 
     // std::cerr << "Frequencies of inverted chromosomes: ";
-    // for (int n = 0; n < (int)paramData->initialFreqs.size(); n++)
-    // {
+    // for (int n = 0; n < (int) initialFreqs.size(); n++) {
     //     std::cerr << (n) << " = " << paramData->initialFreqs.at(n) << " | ";
     // }
     // std::cerr << '\n';
 
     // // Simulate speciation?
-    // getline(fin, line);
-    // iss.clear();
-    // iss.str(line);
-    // while (iss >> doubtemp)
-    // {
-    //     paramData->speciation.push_back(doubtemp);
-    // }
-    // if (paramData->speciation.at(0) == 1)
-    // {
-    //     if (paramData->speciation.size() < 3)
-    //     {
+    // auto speciation = input[SPECIATION];
+    // bool simulateSpeciation = speciation[SIMULATE].as<bool>();
+    // paramData->speciation.push_back(simulateSpeciation ? 1 : 0);
+    // if (simulateSpeciation) {
+    //     if (!speciation[TIME] || !speciation[INVERSION_FREQ]) {
     //         std::cerr << "Error; Simulating speciation but no time or invFreq parameters found\n";
     //         exit(1);
     //     }
-    //     std::cerr << "Speciation time: " << paramData->speciation.at(1) << "\n";
-    // }
-    // else
-    // {
+    //     paramData->speciation.push_back(speciation[TIME].as<double>());
+    //     paramData->speciation.push_back(speciation[INVERSION_FREQ].as<double>());
+
+    //     std::cerr << "Speciation time: " << speciation[TIME] << "\n";
+    // } else {
     //     std::cerr << "No speciation.\n";
     // }
 
     // // Simulate demography?
-    // getline(fin, line);
-    // iss.clear();
-    // iss.str(line);
-    // while (iss >> doubtemp)
-    // {
-    //     paramData->demography.push_back(doubtemp);
-    // }
-    // if (paramData->demography.at(0) == 1)
-    // {
-    //     if (paramData->speciation.size() < 3)
-    //     {
+    // auto demography = input[DEMOGRAPHY_CHANGE];
+    // bool simulateDemography = demography[SIMULATE].as<bool>();
+    // paramData->demography.push_back(simulateDemography ? 1 : 0);
+    // if (simulateDemography) {
+    //     if (!demography[TIME] || !demography[COEFFICIENT]) {
     //         std::cerr << "Error; Simulating demography but no time parameter found\n";
     //         exit(1);
     //     }
-    //     std::cerr << "Demography change time: " << paramData->demography.at(1) << "\n";
+    //     paramData->demography.push_back(demography[TIME].as<double>());
+    //     paramData->demography.push_back(demography[COEFFICIENT].as<double>());
+    //     std::cerr << "Demography change time: " << demography[TIME] << "\n";
     //     std::cerr << "Reminder: this coeff multiplies all pop sizes in the preceding epoch\n";
-    // }
-    // else
-    // {
+    // } else {
     //     std::cerr << "No demographic event.\n";
     // }
 
     // // Age of inversion in number of generations (EX: 1500)
-    // getline(fin, line);
-    // iss.clear();
-    // iss.str(line);
-    // while (iss >> temp)
-    // {
-    //     paramData->inv_age = temp;
-    // }
-    // std::cerr << "Age of inversion = " << paramData->inv_age << '\n';
-
-    // if (paramData->inv_age > 0 && paramData->inv_age < std::max(paramData->demography.at(1), paramData->speciation.at(1)))
-    // {
+    // unsigned int inversionAge = input[INVERSION_AGE].as<unsigned int>();
+    // if (inversionAge > 0 && inversionAge < std::max(demography[TIME].as<double>(), speciation[TIME].as<double>())) {
     //     std::cerr << "Error: Current implementations only allows for inversions that predate speciation and demographic changes\n";
     //     exit(1);
     // }
 
+    // paramData->inv_age = inversionAge;
+    // std::cerr << "Age of inversion = " << paramData->inv_age << '\n';
+
     // // Migration rate (4Nm)
-    // getline(fin, line);
-    // iss.clear();
-    // iss.str(line);
-    // while (iss >> doubtemp)
-    // {
-    //     paramData->migRate.push_back(doubtemp);
-    // }
+    // double migrationRate = input[MIG_RATE].as<double>();
+    // paramData->migRate.push_back(migrationRate);
     // std::cerr << "Migration rate (pop0<-->1) = " << paramData->migRate[0] << '\n';
 
     // // bases per Morgan in the hh genotype.
-    // getline(fin, line);
-    // iss.clear();
-    // iss.str(line);
-    // while (iss >> doubtemp)
-    // {
-    //     paramData->BasesPerMorgan = doubtemp;
-    // }
+    // double bpm = input[BP].as<double>();
+    // paramData->BasesPerMorgan = bpm;
     // std::cerr << "Bases per Morgan in homokaryotypic recombination " << paramData->BasesPerMorgan << '\n';
 
     // // Random phi?
-    // getline(fin, line);
-    // iss.clear();
-    // iss.str(line);
-    // while (iss >> temp)
-    // {
-    //     paramData->randPhi = (bool)temp;
-    // }
+    // bool randPhi = input[IS_PHI_RANDOM].as<bool>();
+    // paramData->randPhi = randPhi;
     // std::cerr << "Random phi values? (if 1, range below. if 0, single value read below) " << paramData->randPhi << '\n';
 
-    // getline(fin, line);
-    // iss.clear();
-    // iss.str(line);
-    // while (iss >> doubtemp)
-    // {
-    //     paramData->phi_range.push_back(doubtemp);
-    // }
-    // if (paramData->randPhi)
-    // {
-    //     std::cerr << "Random gene flux (phi) range = " << paramData->phi_range[0] << " - " << paramData->phi_range[1] << '\n';
-    // }
-    // else
-    // {
+    // vector<double> phiRange = input[PHI].as<vector<double>>();
+    // paramData->phi_range = phiRange;
+    // if (randPhi) {
+    //     std::cerr << "Random gene flux (phi) range = " << paramData->phi_range[0] << " - " << phiRange[1] << '\n';
+    // } else {
     //     std::cerr << "Gene flux (phi) = " << paramData->phi_range[0] << '\n';
     // }
 
     // // the range of the inversion
-    // vector<double> invtemp;
-    // getline(fin, line);
-    // iss.clear();
-    // iss.str(line);
-    // while (iss >> doubtemp)
-    // {
-    //     invtemp.push_back(doubtemp);
-    // }
-    // paramData->invRange.L = invtemp[0] / paramData->BasesPerMorgan;
-    // paramData->invRange.R = invtemp[1] / paramData->BasesPerMorgan;
-    // std::cerr << "Inversion from: " << invtemp[0] << " to " << invtemp[1] << " (" << paramData->invRange.L << " - " << paramData->invRange.R << " recUnits)\n";
+    // double left = input[INVERSION_BREAKPOINTS][LEFT].as<double>();
+    // double right = input[INVERSION_BREAKPOINTS][RIGHT].as<double>();
+    // paramData->invRange.L = left;
+    // paramData->invRange.R = right;
+    // std::cerr << "Inversion from: " << paramData->invRange.L << " to " << paramData->invRange.R << " (" << paramData->invRange.L << " - " << paramData->invRange.R << " recUnits)\n";
 
     // // Fixed S? Value of S or sequence length (bases), Theta
-    // vector<double> stemp;
-    // getline(fin, line);
-    // iss.clear();
-    // iss.str(line);
-    // while (iss >> doubtemp)
-    // {
-    //     stemp.push_back(doubtemp);
-    // }
-    // paramData->fixedS = (bool)stemp[0];
-    // paramData->n_SNPs = (int)stemp[1];
-    // if (paramData->fixedS)
-    // {
-    //     paramData->theta = 0;
-    //     std::cerr << "Number of markers to simulate: " << paramData->n_SNPs << '\n';
-    // }
-    // else
-    // {
-    //     paramData->theta = stemp[2];
-    //     std::cerr << "Number of bases (non-recombining) to simulate: " << paramData->n_SNPs << ", with mutation rate: " << paramData->theta << '\n';
-    // }
+    // auto snp = input[SNP];
+    // bool SNPFixed = snp[IS_FIXED].as<bool>();
+    // paramData->fixedS = SNPFixed;
+
+    // unsigned int numBases = snp[NUM_BASES].as<unsigned int>();
+    // paramData->n_SNPs = numBases;
+
+    // double mutationRate = snp[MUTATION_RATE].as<double>();
+    // paramData->theta = SNPFixed ? 0 : mutationRate;
+    // std::cerr << (SNPFixed ? "Number of markers to simulate: " : "Number of bases (non-recombining) to simulate: ") << paramData->n_SNPs << '\n';
 
     // // random positions of SNPs?
-    // getline(fin, line);
-    // iss.clear();
-    // iss.str(line);
-    // while (iss >> temp)
-    // {
-    //     paramData->randSNP = (bool)temp;
-    // }
+    // bool randSNP = snp[RANDOM_POS].as<bool>();
+    // paramData->randSNP = randSNP;
     // std::cerr << "Markers in random locations? " << paramData->randSNP << '\n';
 
     // // range (positions of begin-end) where the SNPs are -- in bases
-    // getline(fin, line);
-    // iss.clear();
-    // iss.str(line);
-    // while (iss >> doubtemp)
-    // {
-    //     paramData->snpPositions.push_back(doubtemp / paramData->BasesPerMorgan);
+    // vector<double> snpPositions;
+    // if (snp[RANGE]) {
+    //     snpPositions = input[SNP][RANGE].as<vector<double>>();
+    // } else {
+    //     exit(1);
+    // }
+    
+    // for (int i = 0; i < snpPositions.size(); i++) {
+    //     snpPositions[i] = snpPositions[i] / bpm;
+    //     paramData->snpPositions.push_back(snpPositions[i]);
     // }
     // std::cerr << paramData->snpPositions.size() << " Site positions read.\n";
 
-    // if (paramData->randSNP)
-    // {
-    //     paramData->snpRange.push_back(paramData->snpPositions[0]);
-    //     paramData->snpRange.push_back(paramData->snpPositions[paramData->snpPositions.size() - 1]);
+    // if (randSNP) {
+    //     paramData->snpRange.push_back(snpPositions[0]);
+    //     paramData->snpRange.push_back(snpPositions[snpPositions.size() - 1]);
 
-    //     if (paramData->snpPositions.size() != 2)
-    //     {
+    //     if (snpPositions.size() != 2) {
     //         std::cerr << "Warning: Asking for random SNPs, but number of SNPs read !=2. Will only take first and last SNP positions as the range for random SNP locations\n";
     //     }
-    //     if (!paramData->fixedS)
-    //     {
+    //     if (!SNPFixed) {
     //         std::cerr << "Warning: Number of segregating sites (S) is not fixed. SNPRange will be ignored. Random SNPs will be simulated in non-recombining region, using theta parameter.\n";
     //     }
     //     std::cerr << "Window of SNP locations (in recUnits): " << paramData->snpRange[0] << " - " << paramData->snpRange[paramData->snpRange.size() - 1] << '\n';
-    // }
-
-    // if (!paramData->fixedS)
-    // {
+    // } else {
     //     paramData->snpPositions.resize(1);
-    //     paramData->randSNP = false;
     // }
 
     // // should the sample be random?
-    // bool randomSample = false;
-    // getline(fin, line);
-    // iss.clear();
-    // iss.str(line);
-    // while (iss >> temp)
-    // {
-    //     randomSample = (bool)temp;
-    // }
+    // bool randomSample = input[CARRIERS][RANDOM].as<bool>();
     // std::cerr << "Random sample of carriers? " << randomSample << '\n';
 
-    // paramData->nCarriers.resize(pops);
+    // paramData->nCarriers.resize(popSizes.size());
 
-    // if (randomSample)
-    // {
-    //     vector<int> tempRead;
-    //     getline(fin, line);
-    //     iss.clear();
-    //     iss.str(line);
-    //     while (iss >> temp)
-    //     {
-    //         tempRead.push_back(temp);
-    //     }
-    //     if (tempRead.size() != pops)
-    //     {
+    // if (randomSample) {
+    //     vector<int> carriers = input[CARRIERS][DATA][0].as<vector<int>>();
+    //     if (carriers.size() != popSizes.size()) {
     //         std::cerr << "Inconsistent number of sample sizes found (should be equal to number of pops)\n";
     //         exit(1);
     //     }
 
-    //     for (int p = 0; p < pops; ++p)
-    //     {
-    //         int invcount = randbinom(tempRead[p], paramData->initialFreqs.at(p));
-    //         paramData->nCarriers.at(p).push_back(tempRead[p] - invcount);
+    //     for (int p = 0; p < popSizes.size(); ++p) {
+    //         int invcount = randbinom(carriers[p], paramData->initialFreqs.at(p));
+    //         paramData->nCarriers.at(p).push_back(carriers[p] - invcount);
     //         paramData->nCarriers.at(p).push_back(invcount);
     //     }
-    // }
-    // else
-    // { // number of S, I carriers in each pop
+    // } else {
+    //     YAML::Node carriersDataRaw = input[CARRIERS][DATA];
     //     int totalSample = 0;
-    //     for (int p = 0; p < pops; ++p)
-    //     {
+    //     for (int p = 0; p < popSizes.size(); ++p) {
     //         std::cerr << "Sample in Pop " << p << ": ";
-    //         getline(fin, line);
-    //         iss.clear();
-    //         iss.str(line);
-    //         while (iss >> temp)
-    //         {
-    //             paramData->nCarriers.at(p).push_back(temp);
-    //             totalSample += temp;
-    //             std::cerr << temp << " ";
+    //         vector<int> row = carriersDataRaw[p].as<vector<int>>();
+    //         for (int j = 0; j < row.size(); j++){
+    //             paramData->nCarriers.at(p).push_back(row[j]);
+    //             totalSample += row[j];
+    //             std::cerr << row[j] << " ";
     //         }
     //         std::cerr << '\n';
     //     }
-    //     if (totalSample == 2)
+    //     if (totalSample == 2) {
     //         std::cerr << "Sample size = 2 || Warning: Informative sites length function won't work.\n";
+    //     }
     // }
-
-    // fin.close();
 
 } // end constructor
 
