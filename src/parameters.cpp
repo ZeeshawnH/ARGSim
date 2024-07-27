@@ -83,17 +83,17 @@ Parameters::Parameters(const char *insstring)
     // Number of runs
     auto nRuns = input[NUM_RUNS].as<unsigned int>();
     paramData->nRuns = nRuns;
-    std::cerr << "Number of runs: " << nRuns << '\n';
+    std::cerr << "Number of runs: " << paramData->nRuns << '\n';
 
     // Should we simulate kingman coalescent? (i.e. exponential waiting times). If false, does generation by generation
     bool kingman = input[KINGMAN].as<bool>();
     paramData->kingman = kingman;
-    std::cerr << "Assuming Kingman? " << kingman << '\n';
+    std::cerr << "Assuming Kingman? " << paramData->kingman << '\n';
 
     // Simulate drift trajectory?
     bool drift = input[DRIFT].as<bool>();
     paramData->drift = drift;
-    std::cerr << "Simulating drift? " << drift << '\n';
+    std::cerr << "Simulating drift? " << paramData->drift << '\n';
 
     if (drift)
     {
@@ -104,7 +104,7 @@ Parameters::Parameters(const char *insstring)
     // Output ms-formatted haplotypes?
     bool msOutput = input[MS_OUTPUT].as<bool>();
     paramData->msOutput = msOutput;
-    std::cerr << "Output each set in ms format? " << msOutput << '\n';
+    std::cerr << "Output each set in ms format? " << paramData->msOutput << '\n';
 
     // Population sizes
     vector<unsigned int> popSizes = input[POP_SIZES].as<vector<unsigned int>>();
@@ -123,7 +123,7 @@ Parameters::Parameters(const char *insstring)
     vector<double> initialFreqs = input[INVERSION_FREQS].as<vector<double>>();
     paramData->initialFreqs = initialFreqs;
 
-    if (initialFreqs.size() != popSizes.size())
+    if (paramData->initialFreqs.size() != paramData->popSizeVec.size())
     {
         std::cerr << "Inconsistent number of sample sizes found (should be equal to number of pops)\n";
         exit(1);
@@ -177,7 +177,7 @@ Parameters::Parameters(const char *insstring)
     }
 
     paramData->inv_age = inversionAge;
-    std::cerr << "Age of inversion = " << inversionAge << '\n';
+    std::cerr << "Age of inversion = " << paramData->inv_age << '\n';
 
     // Migration rate (4Nm)
     double migrationRate = input[MIG_RATE].as<double>();
@@ -197,9 +197,9 @@ Parameters::Parameters(const char *insstring)
     vector<double> phiRange = input[PHI].as<vector<double>>();
     paramData->phi_range = phiRange;
     if (randPhi) {
-        std::cerr << "Random gene flux (phi) range = " << phiRange[0] << " - " << phiRange[1] << '\n';
+        std::cerr << "Random gene flux (phi) range = " << paramData->phi_range[0] << " - " << phiRange[1] << '\n';
     } else {
-        std::cerr << "Gene flux (phi) = " << phiRange[0] << '\n';
+        std::cerr << "Gene flux (phi) = " << paramData->phi_range[0] << '\n';
     }
 
     // the range of the inversion
@@ -207,7 +207,7 @@ Parameters::Parameters(const char *insstring)
     double right = input[INVERSION_BREAKPOINTS][RIGHT].as<double>();
     paramData->invRange.L = left;
     paramData->invRange.R = right;
-    std::cerr << "Inversion from: " << left << " to " << right << " (" << left << " - " << right << " recUnits)\n";
+    std::cerr << "Inversion from: " << paramData->invRange.L << " to " << paramData->invRange.R << " (" << paramData->invRange.L << " - " << paramData->invRange.R << " recUnits)\n";
 
     // Fixed S? Value of S or sequence length (bases), Theta
     auto snp = input[SNP];
@@ -219,12 +219,12 @@ Parameters::Parameters(const char *insstring)
 
     double mutationRate = snp[MUTATION_RATE].as<double>();
     paramData->theta = SNPFixed ? 0 : mutationRate;
-    std::cerr << (SNPFixed ? "Number of markers to simulate: " : "Number of bases (non-recombining) to simulate: ") << numBases << '\n';
+    std::cerr << (SNPFixed ? "Number of markers to simulate: " : "Number of bases (non-recombining) to simulate: ") << paramData->n_SNPs << '\n';
 
     // random positions of SNPs?
     bool randSNP = snp[RANDOM_POS].as<bool>();
     paramData->randSNP = randSNP;
-    std::cerr << "Markers in random locations? " << randSNP << '\n';
+    std::cerr << "Markers in random locations? " << paramData->randSNP << '\n';
 
     // range (positions of begin-end) where the SNPs are -- in bases
     vector<double> snpPositions;
@@ -238,7 +238,7 @@ Parameters::Parameters(const char *insstring)
         snpPositions[i] = snpPositions[i] / bpm;
         paramData->snpPositions.push_back(snpPositions[i]);
     }
-    std::cerr << snpPositions.size() << " Site positions read.\n";
+    std::cerr << paramData->snpPositions.size() << " Site positions read.\n";
 
     if (randSNP) {
         paramData->snpRange.push_back(snpPositions[0]);
