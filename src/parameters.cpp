@@ -582,8 +582,8 @@ Parameters::Parameters(const char *insstring)
     std::cerr << paramData->snpPositions.size() << " Site positions read.\n";
 
     if (paramData->randSNP) {
-        paramData->snpRange.push_back(snpPositions[0]);
-        paramData->snpRange.push_back(snpPositions.back());
+        paramData->snpRange.push_back(paramData->snpPositions[0]);
+        paramData->snpRange.push_back(paramData->snpPositions.back());
 
         if (snpPositions.size() != 2) {
             std::cerr << "Warning: Asking for random SNPs, but number of SNPs read != 2. Will only take first and last SNP positions as the range for random SNP locations\n";
