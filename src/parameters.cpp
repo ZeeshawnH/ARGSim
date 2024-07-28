@@ -575,13 +575,13 @@ Parameters::Parameters(const char *insstring)
     }
     
     for (int i = 0; i < snpPositions.size(); i++) {
-        paramData->snpPositions.push_back(snpPositions[i] / paramData->BasesPerMorgan);
+        paramData->snpPositions.push_back(snpPositions.at(i) / paramData->BasesPerMorgan);
     }
     std::cerr << paramData->snpPositions.size() << " Site positions read.\n";
 
     if (paramData->randSNP) {
-        paramData->snpRange.push_back(snpPositions[0]);
-        paramData->snpRange.push_back(snpPositions[snpPositions.size() - 1]);
+        paramData->snpRange.push_back(snpPositions.at(0));
+        paramData->snpRange.push_back(snpPositions.at(snpPositions.size() - 1));
 
         if (snpPositions.size() != 2) {
             std::cerr << "Warning: Asking for random SNPs, but number of SNPs read !=2. Will only take first and last SNP positions as the range for random SNP locations\n";
