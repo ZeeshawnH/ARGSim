@@ -567,29 +567,31 @@ Parameters::Parameters(const char *insstring)
     // std::cerr << "Markers in random locations? " << paramData->randSNP << '\n';
 
     // range (positions of begin-end) where the SNPs are -- in bases
-    vector<double> snpPositions;
-    if (input[SNP][RANGE]) {
-        snpPositions = input[SNP][RANGE].as<vector<double>>();
-    } else {
+    if (!input[SNP][RANGE]) {
         exit(1);
     }
-    
-    for (int i = 0; i < snpPositions.size(); i++) {
-        paramData->snpPositions.push_back(snpPositions.at(i) / paramData->BasesPerMorgan);
+
+    const vector<double>& snpPositions = input[SNP][RANGE].as<vector<double>>();
+
+    // Reserve space in paramData->snpPositions to avoid repeated allocations
+    paramData->snpPositions.reserve(snpPositions.size());
+
+    for (size_t i = 0; i < snpPositions.size(); ++i) {
+        paramData->snpPositions.push_back(snpPositions[i] / paramData->BasesPerMorgan);
     }
     std::cerr << paramData->snpPositions.size() << " Site positions read.\n";
 
     if (paramData->randSNP) {
-        paramData->snpRange.push_back(snpPositions.at(0));
-        paramData->snpRange.push_back(snpPositions.at(snpPositions.size() - 1));
+        paramData->snpRange.push_back(snpPositions[0]);
+        paramData->snpRange.push_back(snpPositions.back());
 
         if (snpPositions.size() != 2) {
-            std::cerr << "Warning: Asking for random SNPs, but number of SNPs read !=2. Will only take first and last SNP positions as the range for random SNP locations\n";
+            std::cerr << "Warning: Asking for random SNPs, but number of SNPs read != 2. Will only take first and last SNP positions as the range for random SNP locations\n";
         }
         if (!paramData->fixedS) {
             std::cerr << "Warning: Number of segregating sites (S) is not fixed. SNPRange will be ignored. Random SNPs will be simulated in non-recombining region, using theta parameter.\n";
         }
-        std::cerr << "Window of SNP locations (in recUnits): " << paramData->snpRange[0] << " - " << paramData->snpRange[paramData->snpRange.size() - 1] << '\n';
+        std::cerr << "Window of SNP locations (in recUnits): " << paramData->snpRange[0] << " - " << paramData->snpRange.back() << '\n';
     } else {
         paramData->snpPositions.resize(1);
     }
