@@ -189,9 +189,10 @@ int main (int argc, const char * argv[]) {
         
         // Run simulation until only a single carrier remains:
         while(!world->simulationFinished()){
+            std::cerr<< "Simulation not finished\n" << std::endl;
             totalEvents += world->simulateGeneration(mig_prob);
         }
-        
+        std::cerr<< "Simulation finished\n" << std::endl;
         
         // After simulation
         vector< shared_ptr < ARGNode > > allNodes = world->getARGVec();

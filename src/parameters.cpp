@@ -318,46 +318,46 @@ Parameters::Parameters(const char *insstring)
     }
 
     // random positions of SNPs?
-    // getline(fin, line);
-    // iss.clear();
-    // iss.str(line);
-    // while (iss >> temp)
-    // {
-    //     paramData->randSNP = (bool)temp;
-    // }
-    // std::cerr << "Markers in random locations? " << paramData->randSNP << '\n';
-
-    // range (positions of begin-end) where the SNPs are -- in bases
     getline(fin, line);
     iss.clear();
     iss.str(line);
-    while (iss >> doubtemp)
+    while (iss >> temp)
     {
-        paramData->snpPositions.push_back(doubtemp / paramData->BasesPerMorgan);
+        paramData->randSNP = (bool)temp;
     }
-    std::cerr << paramData->snpPositions.size() << " Site positions read.\n";
+    std::cerr << "Markers in random locations? " << paramData->randSNP << '\n';
 
-    if (paramData->randSNP)
-    {
-        paramData->snpRange.push_back(paramData->snpPositions[0]);
-        paramData->snpRange.push_back(paramData->snpPositions[paramData->snpPositions.size() - 1]);
+    // // range (positions of begin-end) where the SNPs are -- in bases
+    // getline(fin, line);
+    // iss.clear();
+    // iss.str(line);
+    // while (iss >> doubtemp)
+    // {
+    //     paramData->snpPositions.push_back(doubtemp / paramData->BasesPerMorgan);
+    // }
+    // std::cerr << paramData->snpPositions.size() << " Site positions read.\n";
 
-        if (paramData->snpPositions.size() != 2)
-        {
-            std::cerr << "Warning: Asking for random SNPs, but number of SNPs read !=2. Will only take first and last SNP positions as the range for random SNP locations\n";
-        }
-        if (!paramData->fixedS)
-        {
-            std::cerr << "Warning: Number of segregating sites (S) is not fixed. SNPRange will be ignored. Random SNPs will be simulated in non-recombining region, using theta parameter.\n";
-        }
-        std::cerr << "Window of SNP locations (in recUnits): " << paramData->snpRange[0] << " - " << paramData->snpRange[paramData->snpRange.size() - 1] << '\n';
-    }
+    // if (paramData->randSNP)
+    // {
+    //     paramData->snpRange.push_back(paramData->snpPositions[0]);
+    //     paramData->snpRange.push_back(paramData->snpPositions[paramData->snpPositions.size() - 1]);
 
-    if (!paramData->fixedS)
-    {
-        paramData->snpPositions.resize(1);
-        paramData->randSNP = false;
-    }
+    //     if (paramData->snpPositions.size() != 2)
+    //     {
+    //         std::cerr << "Warning: Asking for random SNPs, but number of SNPs read !=2. Will only take first and last SNP positions as the range for random SNP locations\n";
+    //     }
+    //     if (!paramData->fixedS)
+    //     {
+    //         std::cerr << "Warning: Number of segregating sites (S) is not fixed. SNPRange will be ignored. Random SNPs will be simulated in non-recombining region, using theta parameter.\n";
+    //     }
+    //     std::cerr << "Window of SNP locations (in recUnits): " << paramData->snpRange[0] << " - " << paramData->snpRange[paramData->snpRange.size() - 1] << '\n';
+    // }
+
+    // if (!paramData->fixedS)
+    // {
+    //     paramData->snpPositions.resize(1);
+    //     paramData->randSNP = false;
+    // }
 
     // // should the sample be random?
     // bool randomSample = false;
@@ -566,35 +566,35 @@ Parameters::Parameters(const char *insstring)
     // paramData->randSNP = randSNP;
     // std::cerr << "Markers in random locations? " << paramData->randSNP << '\n';
 
-    // // range (positions of begin-end) where the SNPs are -- in bases
-    // if (!input[SNP][RANGE]) {
-    //     exit(1);
-    // }
+    // range (positions of begin-end) where the SNPs are -- in bases
+    if (!input[SNP][RANGE]) {
+        exit(1);
+    }
 
-    // const vector<double>& snpPositions = input[SNP][RANGE].as<vector<double>>();
+    const vector<double>& snpPositions = input[SNP][RANGE].as<vector<double>>();
 
-    // // Reserve space in paramData->snpPositions to avoid repeated allocations
-    // paramData->snpPositions.reserve(snpPositions.size());
+    // Reserve space in paramData->snpPositions to avoid repeated allocations
+    paramData->snpPositions.reserve(snpPositions.size());
 
-    // for (size_t i = 0; i < snpPositions.size(); ++i) {
-    //     paramData->snpPositions.push_back(snpPositions[i] / paramData->BasesPerMorgan);
-    // }
-    // std::cerr << paramData->snpPositions.size() << " Site positions read.\n";
+    for (size_t i = 0; i < snpPositions.size(); ++i) {
+        paramData->snpPositions.push_back(snpPositions[i] / paramData->BasesPerMorgan);
+    }
+    std::cerr << paramData->snpPositions.size() << " Site positions read.\n";
 
-    // if (paramData->randSNP) {
-    //     paramData->snpRange.push_back(paramData->snpPositions[0]);
-    //     paramData->snpRange.push_back(paramData->snpPositions.back());
+    if (paramData->randSNP) {
+        paramData->snpRange.push_back(paramData->snpPositions[0]);
+        paramData->snpRange.push_back(paramData->snpPositions.back());
 
-    //     if (snpPositions.size() != 2) {
-    //         std::cerr << "Warning: Asking for random SNPs, but number of SNPs read != 2. Will only take first and last SNP positions as the range for random SNP locations\n";
-    //     }
-    //     if (!paramData->fixedS) {
-    //         std::cerr << "Warning: Number of segregating sites (S) is not fixed. SNPRange will be ignored. Random SNPs will be simulated in non-recombining region, using theta parameter.\n";
-    //     }
-    //     std::cerr << "Window of SNP locations (in recUnits): " << paramData->snpRange[0] << " - " << paramData->snpRange.back() << '\n';
-    // } else {
-    //     paramData->snpPositions.resize(1);
-    // }
+        if (snpPositions.size() != 2) {
+            std::cerr << "Warning: Asking for random SNPs, but number of SNPs read != 2. Will only take first and last SNP positions as the range for random SNP locations\n";
+        }
+        if (!paramData->fixedS) {
+            std::cerr << "Warning: Number of segregating sites (S) is not fixed. SNPRange will be ignored. Random SNPs will be simulated in non-recombining region, using theta parameter.\n";
+        }
+        std::cerr << "Window of SNP locations (in recUnits): " << paramData->snpRange[0] << " - " << paramData->snpRange.back() << '\n';
+    } else {
+        paramData->snpPositions.resize(1);
+    }
 
     // should the sample be random?
     bool randomSample = input[CARRIERS][RANDOM].as<bool>();
