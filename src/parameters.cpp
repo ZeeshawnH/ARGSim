@@ -561,12 +561,12 @@ Parameters::Parameters(const char *insstring)
     // paramData->theta = SNPFixed ? 0 : mutationRate;
     // std::cerr << (SNPFixed ? "Number of markers to simulate: " : "Number of bases (non-recombining) to simulate: ") << paramData->n_SNPs << '\n';
 
-    // random positions of SNPs?
-    bool randSNP = input[SNP][RANDOM_POS].as<bool>();
-    paramData->randSNP = randSNP;
-    std::cerr << "Markers in random locations? " << paramData->randSNP << '\n';
+    // // random positions of SNPs?
+    // bool randSNP = input[SNP][RANDOM_POS].as<bool>();
+    // paramData->randSNP = randSNP;
+    // std::cerr << "Markers in random locations? " << paramData->randSNP << '\n';
 
-    // range (positions of begin-end) where the SNPs are -- in bases
+    // // range (positions of begin-end) where the SNPs are -- in bases
     // if (!input[SNP][RANGE]) {
     //     exit(1);
     // }
